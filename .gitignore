@@ -1,0 +1,12 @@
+.DS_Store
+*.local.json
+*.pem
+*.pfx
+*.key
+.env
+.env.*
+infra/*.json
+infra/*.bicepparam
+!infra/*.bicepparam.example
+deployment-output.*
+**/.pbi/

@@ -1,0 +1,87 @@
+table config
+	lineageTag: d696637c-c38c-4afe-a0a7-2bcd98007dcc
+
+	column 'Last refresh'
+		dataType: dateTime
+		formatString: mmmm d\, yyyy
+		lineageTag: fcf1e057-1d96-476e-8b73-59b8467f4b25
+		summarizeBy: none
+		sourceColumn: Last refresh
+
+		variation Variation
+			isDefault
+			relationship: 773a4b3b-2737-4f10-903a-f702a1e29325
+			defaultHierarchy: LocalDateTable_7a5db9ed-af0c-407b-ba15-aefaf35ee6c2.'Date Hierarchy'
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column total_devs = 200
+		formatString: 0
+		lineageTag: 65159688-4b72-4485-aaa0-42c62243f522
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column avg_hourly_salary = 50
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 0ca9afbb-969f-4625-82e2-45fbad5f526b
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column annual_work_weeks = 48
+		formatString: 0
+		lineageTag: fbacaef2-e50e-4a0b-8133-d712a19fbed6
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column average_weekly_hour_savings = 3.5
+		formatString: 0.0
+		lineageTag: 7f39cf17-9263-474e-b99a-aa1eac3849c5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column display_formula = Config[total_devs] & " devs X $" & Config[avg_hourly_salary] & "/hr X " & Config[annual_work_weeks] & " weeks X " & Config[average_weekly_hour_savings] & "/hrs ="
+		lineageTag: d8ade074-4296-416e-baa6-a4b38df5e31a
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column forecast_savings = Config[total_devs] * Config[avg_hourly_salary] * Config[annual_work_weeks] * Config[average_weekly_hour_savings]
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: d0944715-8de6-4ce1-acc5-5920347e9b86
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column expected_daily_savings = Config[total_devs] * Config[avg_hourly_salary] * (Config[average_weekly_hour_savings]/5)
+		dataType: int64
+		formatString: \$#,0.###############;(\$#,0.###############);\$#,0.###############
+		lineageTag: 644b3672-d018-40e1-8422-b039a2a53f38
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition config = m
+		mode: import
+		source =
+				let
+				    Source = #table({"Last refresh"}, {{DateTime.Time(DateTime.LocalNow()) & DateTime.Date(DateTime.LocalNow())}}),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Last refresh", type datetime}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

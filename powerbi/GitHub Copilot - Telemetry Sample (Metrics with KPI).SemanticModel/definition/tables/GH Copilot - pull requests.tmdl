@@ -1,0 +1,101 @@
+table 'GH Copilot - pull requests'
+	lineageTag: 709c076d-fefc-4cc2-8707-42051ae7b09c
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 1fac8188-0b3c-4397-85e0-7e4123f14c03
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'repositories.name'
+		dataType: string
+		lineageTag: 7f72ee62-35d9-4d00-86d5-b540a8b6dd14
+		summarizeBy: none
+		sourceColumn: repositories.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: bdb41e7e-01aa-46ff-8e6e-90ac07f54367
+		summarizeBy: sum
+		sourceColumn: repositories.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.models.name'
+		dataType: string
+		lineageTag: 57ea5853-c459-44c9-99e5-b94baa0793ba
+		summarizeBy: none
+		sourceColumn: repositories.models.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.models.is_custom_model'
+		dataType: string
+		lineageTag: a28da988-04fd-40a9-b5cb-519aa6ab8ad4
+		summarizeBy: none
+		sourceColumn: repositories.models.is_custom_model
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.models.custom_model_training_date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: df05b12c-67a2-499e-8812-f70b0d271eeb
+		summarizeBy: none
+		sourceColumn: repositories.models.custom_model_training_date
+
+		variation Variation
+			isDefault
+			relationship: 288d88e7-d77c-416b-b3d1-760f3b292ecd
+			defaultHierarchy: LocalDateTable_407e8d31-b2b2-4157-8f41-47f9cd486dee.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.models.total_pr_summaries_created'
+		dataType: int64
+		formatString: 0
+		lineageTag: 3f1de873-1dcf-4002-9fa0-30d2cd7b78b4
+		summarizeBy: sum
+		sourceColumn: repositories.models.total_pr_summaries_created
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'repositories.models.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 05d261ef-0916-4dfe-9a95-462e1939689f
+		summarizeBy: sum
+		sourceColumn: repositories.models.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GH Copilot - pull requests' = m
+		mode: import
+		source =
+				let
+				    Source = source,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1.copilot_ide_chat", "Column1.total_active_users", "Column1.copilot_dotcom_chat", "Column1.total_engaged_users", "Column1.copilot_ide_code_completions"}),
+				    #"Expanded Column1.copilot_dotcom_pull_requests1" = Table.ExpandRecordColumn(#"Removed Columns", "Column1.copilot_dotcom_pull_requests", {"total_engaged_users", "repositories"}, {"Column1.copilot_dotcom_pull_requests.total_engaged_users", "Column1.copilot_dotcom_pull_requests.repositories"}),
+				    #"Expanded Column1.copilot_dotcom_pull_requests.repositories" = Table.ExpandListColumn(#"Expanded Column1.copilot_dotcom_pull_requests1", "Column1.copilot_dotcom_pull_requests.repositories"),
+				    #"Expanded Column1.copilot_dotcom_pull_requests.repositories1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_dotcom_pull_requests.repositories", "Column1.copilot_dotcom_pull_requests.repositories", {"name", "total_engaged_users", "models"}, {"Column1.copilot_dotcom_pull_requests.repositories.name", "Column1.copilot_dotcom_pull_requests.repositories.total_engaged_users", "Column1.copilot_dotcom_pull_requests.repositories.models"}),
+				    #"Expanded Column1.copilot_dotcom_pull_requests.repositories.models" = Table.ExpandListColumn(#"Expanded Column1.copilot_dotcom_pull_requests.repositories1", "Column1.copilot_dotcom_pull_requests.repositories.models"),
+				    #"Expanded Column1.copilot_dotcom_pull_requests.repositories.models1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_dotcom_pull_requests.repositories.models", "Column1.copilot_dotcom_pull_requests.repositories.models", {"name", "is_custom_model", "custom_model_training_date", "total_pr_summaries_created", "total_engaged_users"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.name", "Column1.copilot_dotcom_pull_requests.repositories.models.is_custom_model", "Column1.copilot_dotcom_pull_requests.repositories.models.custom_model_training_d", "Column1.copilot_dotcom_pull_requests.repositories.models.total_pr_summaries_crea", "Column1.copilot_dotcom_pull_requests.repositories.models.total_engaged_users"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Column1.copilot_dotcom_pull_requests.repositories.models1",{{"date", type date}, {"Column1.copilot_dotcom_pull_requests.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_pull_requests.repositories.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_pull_requests.repositories.models.total_pr_summaries_crea", Int64.Type}, {"Column1.copilot_dotcom_pull_requests.repositories.models.total_engaged_users", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1.copilot_dotcom_pull_requests.total_engaged_users", "total_engaged_users"}, {"Column1.copilot_dotcom_pull_requests.repositories.name", "repositories.name"}, {"Column1.copilot_dotcom_pull_requests.repositories.total_engaged_users", "repositories.total_engaged_users"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.name", "repositories.models.name"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.is_custom_model", "repositories.models.is_custom_model"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.custom_model_training_d", "repositories.models.custom_model_training_date"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.total_pr_summaries_crea", "repositories.models.total_pr_summaries_created"}, {"Column1.copilot_dotcom_pull_requests.repositories.models.total_engaged_users", "repositories.models.total_engaged_users"}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Renamed Columns",{"total_engaged_users"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns1",{{"repositories.models.custom_model_training_date", type datetime}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

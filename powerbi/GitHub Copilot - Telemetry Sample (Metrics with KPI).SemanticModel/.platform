@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "GitHub Copilot Enterprise Metrics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "355041d8-c159-43ad-8844-9213c29d1945"
+  }
+}

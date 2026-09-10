@@ -1,0 +1,50 @@
+table 'GH Copilot - ide code completions languages'
+	lineageTag: 9f0b9d27-72f7-4675-b371-406d69a5b854
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 082ea536-9b6a-40fc-8326-43964917cada
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'languages.name'
+		dataType: string
+		lineageTag: 155f9116-9522-4c93-bb6d-0bd62018a78b
+		summarizeBy: none
+		sourceColumn: languages.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'languages.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: ae7db239-44be-4c0c-abfe-29965dc1e92f
+		summarizeBy: sum
+		sourceColumn: languages.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GH Copilot - ide code completions languages' = m
+		mode: import
+		source =
+				let
+				    Source = source,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1.copilot_ide_chat", "Column1.total_active_users", "Column1.copilot_dotcom_chat", "Column1.total_engaged_users", "Column1.copilot_dotcom_pull_requests"}),
+				    #"Expanded Column1.copilot_ide_code_completions" = Table.ExpandRecordColumn(#"Removed Columns", "Column1.copilot_ide_code_completions", {"total_engaged_users", "languages", "editors"}, {"Column1.copilot_ide_code_completions.total_engaged_users", "Column1.copilot_ide_code_completions.languages", "Column1.copilot_ide_code_completions.editors"}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Expanded Column1.copilot_ide_code_completions",{"Column1.copilot_ide_code_completions.total_engaged_users", "Column1.copilot_ide_code_completions.editors"}),
+				    #"Expanded Column1.copilot_ide_code_completions.languages" = Table.ExpandListColumn(#"Removed Columns1", "Column1.copilot_ide_code_completions.languages"),
+				    #"Expanded Column1.copilot_ide_code_completions.languages1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_ide_code_completions.languages", "Column1.copilot_ide_code_completions.languages", {"name", "total_engaged_users"}, {"Column1.copilot_ide_code_completions.languages.name", "Column1.copilot_ide_code_completions.languages.total_engaged_users"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Column1.copilot_ide_code_completions.languages1",{{"Column1.copilot_ide_code_completions.languages.name", "languages.name"}, {"Column1.copilot_ide_code_completions.languages.total_engaged_users", "languages.total_engaged_users"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"languages.total_engaged_users", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

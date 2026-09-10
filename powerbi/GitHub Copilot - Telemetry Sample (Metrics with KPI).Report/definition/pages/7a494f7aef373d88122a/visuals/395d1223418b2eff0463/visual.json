@@ -1,0 +1,502 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "395d1223418b2eff0463",
+  "position": {
+    "x": 14.937163375224415,
+    "y": 1001.9389587073608,
+    "z": 19001,
+    "height": 264.27289048473966,
+    "width": 1250.125673249551,
+    "tabOrder": 19001
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GH Copilot - summary"
+                    }
+                  },
+                  "Property": "date"
+                }
+              },
+              "queryRef": "GH Copilot - summary.date",
+              "nativeQueryRef": "Date",
+              "displayName": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GH Copilot - ide code completions editors"
+                    }
+                  },
+                  "Property": "editors.name"
+                }
+              },
+              "queryRef": "GH Copilot - ide code completions editors.editors.name",
+              "nativeQueryRef": "Editor",
+              "displayName": "Editor"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GH Copilot - ide code completions editors"
+                    }
+                  },
+                  "Property": "editors.models.languages.name"
+                }
+              },
+              "queryRef": "GH Copilot - ide code completions editors.editors.models.languages.name",
+              "nativeQueryRef": "Language",
+              "displayName": "Language"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "GH Copilot - ide code completions editors"
+                    }
+                  },
+                  "Property": "editors.models.name"
+                }
+              },
+              "queryRef": "GH Copilot - ide code completions editors.editors.models.name",
+              "nativeQueryRef": "Model Name",
+              "displayName": "Model Name"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide code completions editors"
+                        }
+                      },
+                      "Property": "editors.models.languages.total_code_acceptances"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_acceptances)",
+              "nativeQueryRef": "Code Accepted",
+              "displayName": "Code Accepted"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide code completions editors"
+                        }
+                      },
+                      "Property": "editors.models.languages.total_code_suggestion"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_suggestion)",
+              "nativeQueryRef": "Code Suggested",
+              "displayName": "Code Suggested"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide code completions editors"
+                        }
+                      },
+                      "Property": "editors.models.languages.total_code_lines_accepted"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_lines_accepted)",
+              "nativeQueryRef": "Lines Accepted",
+              "displayName": "Lines Accepted"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide code completions editors"
+                        }
+                      },
+                      "Property": "editors.models.languages.total_code_lines_suggested"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_lines_suggested)",
+              "nativeQueryRef": "Lines Suggested",
+              "displayName": "Lines Suggested"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide chat"
+                        }
+                      },
+                      "Property": "chat.acceptance.total"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide chat.chat.acceptance.total)",
+              "nativeQueryRef": "Chats Accepted",
+              "displayName": "Chats Accepted"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "GH Copilot - ide chat"
+                        }
+                      },
+                      "Property": "editors.models.total_chats"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(GH Copilot - ide chat.editors.models.total_chats)",
+              "nativeQueryRef": "Chats Suggested",
+              "displayName": "Chats Suggested"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "GH Copilot - summary"
+                  }
+                },
+                "Property": "date"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "119.69252750434916D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "GH Copilot - summary.date"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "124.97684743122785D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "GH Copilot - ide code completions editors.editors.models.name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "116.44730319578642D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "GH Copilot - ide code completions editors.editors.models.languages.name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "123.1871838087127D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "GH Copilot - ide code completions editors.editors.name"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "134.53398635770247D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_lines_suggested)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "129.1084367502499D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_lines_accepted)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "121.44151322283858D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(GH Copilot - ide chat.editors.models.total_chats)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "122.83666565540918D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_suggestion)"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "115.83667259776324D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Sum(GH Copilot - ide code completions editors.editors.models.languages.total_code_acceptances)"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Enterprise Usage Details'"
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "dropShadow": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "background": [
+        {
+          "properties": {
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "100D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'ContrastAlternatingRows'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.6
+                    }
+                  }
+                }
+              }
+            },
+            "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

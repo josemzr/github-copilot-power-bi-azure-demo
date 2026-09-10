@@ -1,0 +1,66 @@
+relationship 773a4b3b-2737-4f10-903a-f702a1e29325
+	joinOnDateBehavior: datePartOnly
+	fromColumn: config.'Last refresh'
+	toColumn: LocalDateTable_7a5db9ed-af0c-407b-ba15-aefaf35ee6c2.Date
+
+relationship adab6296-6abd-ca19-e634-fae504faa34d
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'GH Copilot - ide chat'.date
+	toColumn: 'GH Copilot - summary'.date
+
+relationship c5af72af-7e36-0185-0c85-e05a11bf0e48
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'GH Copilot - pull requests'.date
+	toColumn: 'GH Copilot - summary'.date
+
+relationship 8b60a3c6-944c-4583-a7fe-e60aca3f4fec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: source.date
+	toColumn: LocalDateTable_a588a7ce-c9cd-4fb1-856c-2e23f74cb542.Date
+
+relationship b99de6c4-ed34-45ef-89a3-47e747e2dda9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'GH Copilot - dotcom chat'.'models.custom_model_training_date'
+	toColumn: LocalDateTable_3e46fd62-58ce-4293-9ea9-c9bd45aa6df4.Date
+
+relationship AutoDetected_7eb71fd0-3a20-4845-b148-f02713b1fecd
+	toCardinality: many
+	fromColumn: 'GH Copilot - ide code completions editors'.'editors.models.name'
+	toColumn: 'GH Copilot - ide chat'.'editors.models.name'
+
+relationship AutoDetected_9d0f4bcd-c5a5-4718-9bfd-fddc24deea68
+	isActive: false
+	toCardinality: many
+	fromColumn: 'GH Copilot - ide code completions editors'.'editors.models.name'
+	toColumn: 'GH Copilot - pull requests'.'repositories.models.name'
+
+relationship 288d88e7-d77c-416b-b3d1-760f3b292ecd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'GH Copilot - pull requests'.'repositories.models.custom_model_training_date'
+	toColumn: LocalDateTable_407e8d31-b2b2-4157-8f41-47f9cd486dee.Date
+
+relationship b5a97ef3-3a61-4433-b476-323af4bab336
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'GH Copilot - ide code completions editors'.'editors.models.custom_model_training_date'
+	toColumn: LocalDateTable_8b3520a7-c67c-4bb8-99e3-46d51e681285.Date
+
+relationship 480cb392-1361-1e23-bc97-a18b701a7756
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'GH Copilot - ide code completions editors'.date
+	toColumn: 'GH Copilot - summary'.date
+
+relationship 49eaff67-5fee-4763-ac34-830c9c555929
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'GH Copilot - summary'.date
+	toColumn: LocalDateTable_f38571de-15de-4b81-a89d-31a030ce5242.Date
+
+relationship 8eb4a6de-96e4-9327-406b-aa9e2a4cbc36
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'GH Copilot - dotcom chat'.date
+	toColumn: 'GH Copilot - summary'.date
+
+relationship 2d9bd0a9-308e-c801-da00-1a1f519bf427
+	crossFilteringBehavior: bothDirections
+	fromColumn: 'GH Copilot - ide code completions languages'.date
+	toColumn: 'GH Copilot - summary'.date
+

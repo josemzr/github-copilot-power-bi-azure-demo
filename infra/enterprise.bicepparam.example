@@ -1,0 +1,9 @@
+using './main.bicep'
+
+param environmentName = 'demo'
+param dataSourceMode = 'enterprise-report'
+param publicMetricsEnabled = false
+param githubAppId = '<YOUR_GITHUB_APP_ID>'
+param githubInstallationId = '<YOUR_ENTERPRISE_INSTALLATION_ID>'
+param githubMetricsUrl = 'https://api.github.com/enterprises/<YOUR_ENTERPRISE>/copilot/metrics/reports/enterprise-28-day/latest'
+param githubPrivateKeySecretUri = 'https://<YOUR_KEY_VAULT>.vault.azure.net/secrets/github-app-private-key/'

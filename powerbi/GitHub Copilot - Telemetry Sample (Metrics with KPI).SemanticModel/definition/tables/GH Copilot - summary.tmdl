@@ -1,0 +1,127 @@
+table 'GH Copilot - summary'
+	lineageTag: bc2bd01b-a623-4af1-9083-04a0e56984ce
+
+	column date
+		dataType: dateTime
+		formatString: m/d/yyyy
+		lineageTag: 0cf0f03d-0030-44dc-b8ed-8bbdb69d09e9
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 49eaff67-5fee-4763-ac34-830c9c555929
+			defaultHierarchy: LocalDateTable_f38571de-15de-4b81-a89d-31a030ce5242.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column total_active_users
+		dataType: int64
+		formatString: 0
+		lineageTag: 0438c4c0-48fe-4d81-a50c-1955ea65d023
+		summarizeBy: sum
+		sourceColumn: total_active_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_engaged_users
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b3ce9b5-f02c-4109-bdcc-ae1ac97bf8c0
+		summarizeBy: sum
+		sourceColumn: total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column usage_hours_saved = [total_active_users] * (FIRSTNONBLANK(Config[average_weekly_hour_savings],0)/5)
+		lineageTag: c953acbb-e127-4e1f-bc9d-945898c58a1c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column usage_cost_saved = [usage_hours_saved] * FIRSTNONBLANK(Config[avg_hourly_salary], 0)
+		formatString: \$#,0;(\$#,0);\$#,0
+		lineageTag: a32e939d-0004-4927-824d-5b241537b1d3
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsWeekend = IF(WEEKDAY([date]) > 5, 1, 0)
+		formatString: 0
+		lineageTag: 204fead8-471f-449a-85ae-189b8d377a5b
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column usage_gap = FIRSTNONBLANK(Config[total_devs], 0) - [total_active_users]
+		formatString: 0
+		lineageTag: 27268f2d-d037-485b-a39e-956d1990ef77
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'copilot_ide_code_completions.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a97161c-fb76-450e-b7ce-6ceb2a06c33a
+		summarizeBy: sum
+		sourceColumn: copilot_ide_code_completions.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'copilot_ide_chat.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 70130e01-fdd1-4661-a157-0a6276f697a7
+		summarizeBy: sum
+		sourceColumn: copilot_ide_chat.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'copilot_dotcom_chat.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: c7664eff-ce57-426c-adee-42c1f49fc7de
+		summarizeBy: sum
+		sourceColumn: copilot_dotcom_chat.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'copilot_dotcom_pull_requests.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 71dbec6f-93c2-41f9-8b1e-9bd1e4c978dd
+		summarizeBy: sum
+		sourceColumn: copilot_dotcom_pull_requests.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GH Copilot - summary' = m
+		mode: import
+		source =
+				let
+				    Source = source,
+				    #"Expanded Column1.copilot_ide_code_completions" = Table.ExpandRecordColumn(Source, "Column1.copilot_ide_code_completions", {"total_engaged_users", "languages", "editors"}, {"Column1.copilot_ide_code_completions.total_engaged_users", "Column1.copilot_ide_code_completions.languages", "Column1.copilot_ide_code_completions.editors"}),
+				    #"Removed Columns" = Table.RemoveColumns(#"Expanded Column1.copilot_ide_code_completions",{"Column1.copilot_ide_code_completions.languages", "Column1.copilot_ide_code_completions.editors"}),
+				    #"Expanded Column1.copilot_ide_chat" = Table.ExpandRecordColumn(#"Removed Columns", "Column1.copilot_ide_chat", {"total_engaged_users", "editors"}, {"Column1.copilot_ide_chat.total_engaged_users", "Column1.copilot_ide_chat.editors"}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Expanded Column1.copilot_ide_chat",{"Column1.copilot_ide_chat.editors"}),
+				    #"Expanded Column1.copilot_dotcom_chat" = Table.ExpandRecordColumn(#"Removed Columns1", "Column1.copilot_dotcom_chat", {"total_engaged_users", "models"}, {"Column1.copilot_dotcom_chat.total_engaged_users", "Column1.copilot_dotcom_chat.models"}),
+				    #"Removed Columns2" = Table.RemoveColumns(#"Expanded Column1.copilot_dotcom_chat",{"Column1.copilot_dotcom_chat.models"}),
+				    #"Expanded Column1.copilot_dotcom_pull_requests" = Table.ExpandRecordColumn(#"Removed Columns2", "Column1.copilot_dotcom_pull_requests", {"total_engaged_users", "repositories"}, {"Column1.copilot_dotcom_pull_requests.total_engaged_users", "Column1.copilot_dotcom_pull_requests.repositories"}),
+				    #"Removed Columns3" = Table.RemoveColumns(#"Expanded Column1.copilot_dotcom_pull_requests",{"Column1.copilot_dotcom_pull_requests.repositories"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns3",{{"date", type date}, {"Column1.total_active_users", Int64.Type}, {"Column1.total_engaged_users", Int64.Type}, {"Column1.copilot_ide_code_completions.total_engaged_users", Int64.Type}, {"Column1.copilot_ide_chat.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_chat.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_pull_requests.total_engaged_users", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1.total_active_users", "total_active_users"}, {"Column1.total_engaged_users", "total_engaged_users"}, {"Column1.copilot_ide_code_completions.total_engaged_users", "copilot_ide_code_completions.total_engaged_users"}, {"Column1.copilot_ide_chat.total_engaged_users", "copilot_ide_chat.total_engaged_users"}, {"Column1.copilot_dotcom_chat.total_engaged_users", "copilot_dotcom_chat.total_engaged_users"}, {"Column1.copilot_dotcom_pull_requests.total_engaged_users", "copilot_dotcom_pull_requests.total_engaged_users"}}),
+				    #"Removed Duplicates" = Table.Distinct(#"Renamed Columns", {"date"})
+				in
+				    #"Removed Duplicates"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

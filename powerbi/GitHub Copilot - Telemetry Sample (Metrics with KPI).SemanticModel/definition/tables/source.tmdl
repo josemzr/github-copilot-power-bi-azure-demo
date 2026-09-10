@@ -1,0 +1,107 @@
+table source
+	lineageTag: 9547dd35-ad66-4edf-ac8b-0d47daa80bb8
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 712a0fe6-eddd-4e00-8d4c-802df667280a
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 8b60a3c6-944c-4583-a7fe-e60aca3f4fec
+			defaultHierarchy: LocalDateTable_a588a7ce-c9cd-4fb1-856c-2e23f74cb542.'Date Hierarchy'
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Column1.copilot_ide_chat'
+		dataType: string
+		lineageTag: 7a4fd026-91be-4efa-a580-37c3b7a12d5c
+		summarizeBy: none
+		sourceColumn: Column1.copilot_ide_chat
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column1.total_active_users'
+		dataType: string
+		lineageTag: 91d24c0c-aaa5-493f-ad98-7ef621649984
+		summarizeBy: none
+		sourceColumn: Column1.total_active_users
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column1.copilot_dotcom_chat'
+		dataType: string
+		lineageTag: 9ecec6ea-0fde-43f2-969d-f028be93e90f
+		summarizeBy: none
+		sourceColumn: Column1.copilot_dotcom_chat
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column1.total_engaged_users'
+		dataType: string
+		lineageTag: 94befe38-dbb5-4a3f-8869-5396488d1a6c
+		summarizeBy: none
+		sourceColumn: Column1.total_engaged_users
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column1.copilot_dotcom_pull_requests'
+		dataType: string
+		lineageTag: 69488eef-4222-4c51-ae78-606dad641be0
+		summarizeBy: none
+		sourceColumn: Column1.copilot_dotcom_pull_requests
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Column1.copilot_ide_code_completions'
+		dataType: string
+		lineageTag: 91dfa407-de78-40a7-998b-ca4e7ec0ac7f
+		summarizeBy: none
+		sourceColumn: Column1.copilot_ide_code_completions
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition source = m
+		mode: import
+		source =
+				let
+				    Source = Json.Document(
+				        Web.Contents(
+				            "https://YOUR_FUNCTION_APP.azurewebsites.net/api/compatibility-metrics",
+				            [
+				                ApiKeyName = "code",
+				                Headers = [Accept = "application/json"],
+				                Timeout = #duration(0, 0, 2, 0)
+				            ]
+				        )
+				    ),
+				    #"Converted to Table" = Table.FromList(Source, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Expanded Column1" = Table.ExpandRecordColumn(#"Converted to Table", "Column1", {"date", "total_active_users", "total_engaged_users", "copilot_ide_code_completions", "copilot_ide_chat", "copilot_dotcom_chat", "copilot_dotcom_pull_requests"}, {"Column1.date", "Column1.total_active_users", "Column1.total_engaged_users", "Column1.copilot_ide_code_completions", "Column1.copilot_ide_chat", "Column1.copilot_dotcom_chat", "Column1.copilot_dotcom_pull_requests"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Column1",{{"Column1.date", type date}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1.date", "date"}})
+				in
+				    #"Renamed Columns"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

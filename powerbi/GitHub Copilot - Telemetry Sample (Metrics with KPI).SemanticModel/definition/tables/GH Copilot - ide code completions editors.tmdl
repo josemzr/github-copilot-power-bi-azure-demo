@@ -1,0 +1,163 @@
+table 'GH Copilot - ide code completions editors'
+	lineageTag: 202aa73d-054b-4be9-a189-f164a6bea6cd
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ee529e51-5ad7-4809-bf3a-8d1eb6bd207b
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'editors.name'
+		dataType: string
+		lineageTag: 642bb95a-d0e0-4424-98f5-662121e962cb
+		summarizeBy: none
+		sourceColumn: editors.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: b6a20b75-eec6-4acb-885c-fa2315b0dda0
+		summarizeBy: sum
+		sourceColumn: editors.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.name'
+		dataType: string
+		lineageTag: d8b2f778-8d39-406d-ba7c-c4c83b6b7a9f
+		summarizeBy: none
+		sourceColumn: editors.models.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.is_custom_model'
+		dataType: string
+		lineageTag: 4a1e6419-8334-47f8-b67b-70314cd5a4b3
+		summarizeBy: none
+		sourceColumn: editors.models.is_custom_model
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.custom_model_training_date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 49142fd4-2322-4679-93be-badb107651a3
+		summarizeBy: none
+		sourceColumn: editors.models.custom_model_training_date
+
+		variation Variation
+			isDefault
+			relationship: b5a97ef3-3a61-4433-b476-323af4bab336
+			defaultHierarchy: LocalDateTable_8b3520a7-c67c-4bb8-99e3-46d51e681285.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 605ccbe1-4caa-4d73-a819-918c612820c8
+		summarizeBy: sum
+		sourceColumn: editors.models.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.name'
+		dataType: string
+		lineageTag: 24dc77c9-d282-4f21-8b4f-5c43d07ef5eb
+		summarizeBy: none
+		sourceColumn: editors.models.languages.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.total_engaged_user'
+		dataType: int64
+		formatString: 0
+		lineageTag: b293d90e-ae79-4e56-95bc-ad3f7aa3071a
+		summarizeBy: sum
+		sourceColumn: editors.models.languages.total_engaged_user
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.total_code_suggestion'
+		dataType: int64
+		formatString: 0
+		lineageTag: ec6c4a01-669a-4d76-912a-490012a7a255
+		summarizeBy: sum
+		sourceColumn: editors.models.languages.total_code_suggestion
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.total_code_acceptances'
+		dataType: int64
+		formatString: #,0
+		lineageTag: b79ce252-a5c6-4c75-8aea-4c7707b36d22
+		summarizeBy: sum
+		sourceColumn: editors.models.languages.total_code_acceptances
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.total_code_lines_suggested'
+		dataType: int64
+		formatString: #,0
+		lineageTag: 097e8784-2753-4229-8737-b8d6ceb6cdec
+		summarizeBy: sum
+		sourceColumn: editors.models.languages.total_code_lines_suggested
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'editors.models.languages.total_code_lines_accepted'
+		dataType: int64
+		formatString: #,0
+		lineageTag: ea598988-6991-4656-82cf-c4751213ffea
+		summarizeBy: sum
+		sourceColumn: editors.models.languages.total_code_lines_accepted
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'code.acceptance.rate' = DIVIDE([editors.models.languages.total_code_acceptances], [editors.models.languages.total_code_suggestion], 0)
+		dataType: double
+		formatString: 0%;-0%;0%
+		lineageTag: a8b95901-a682-4317-ab98-2b9841e05ffb
+		summarizeBy: sum
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'line.acceptance.rate' = DIVIDE([editors.models.languages.total_code_lines_accepted],[editors.models.languages.total_code_lines_suggested],0)
+		formatString: 0%;-0%;0%
+		lineageTag: c0a2d706-ffcf-4c4d-860f-fbef3c69d78a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GH Copilot - ide code completions editors' = m
+		mode: import
+		source =
+				let
+				    Source = source,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1.copilot_ide_chat", "Column1.total_active_users", "Column1.copilot_dotcom_chat", "Column1.total_engaged_users", "Column1.copilot_dotcom_pull_requests"}),
+				    #"Expanded Column1.copilot_ide_code_completions" = Table.ExpandRecordColumn(#"Removed Columns", "Column1.copilot_ide_code_completions", {"total_engaged_users", "languages", "editors"}, {"Column1.copilot_ide_code_completions.total_engaged_users", "Column1.copilot_ide_code_completions.languages", "Column1.copilot_ide_code_completions.editors"}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Expanded Column1.copilot_ide_code_completions",{"Column1.copilot_ide_code_completions.total_engaged_users", "Column1.copilot_ide_code_completions.languages"}),
+				    #"Expanded Column1.copilot_ide_code_completions.editors" = Table.ExpandListColumn(#"Removed Columns1", "Column1.copilot_ide_code_completions.editors"),
+				    #"Expanded Column1.copilot_ide_code_completions.editors1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_ide_code_completions.editors", "Column1.copilot_ide_code_completions.editors", {"name", "total_engaged_users", "models"}, {"Column1.copilot_ide_code_completions.editors.name", "Column1.copilot_ide_code_completions.editors.total_engaged_users", "Column1.copilot_ide_code_completions.editors.models"}),
+				    #"Expanded Column1.copilot_ide_code_completions.editors.models" = Table.ExpandListColumn(#"Expanded Column1.copilot_ide_code_completions.editors1", "Column1.copilot_ide_code_completions.editors.models"),
+				    #"Expanded Column1.copilot_ide_code_completions.editors.models1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_ide_code_completions.editors.models", "Column1.copilot_ide_code_completions.editors.models", {"name", "is_custom_model", "custom_model_training_date", "total_engaged_users", "languages"}, {"Column1.copilot_ide_code_completions.editors.models.name", "Column1.copilot_ide_code_completions.editors.models.is_custom_model", "Column1.copilot_ide_code_completions.editors.models.custom_model_training_date", "Column1.copilot_ide_code_completions.editors.models.total_engaged_users", "Column1.copilot_ide_code_completions.editors.models.languages"}),
+				    #"Expanded Column1.copilot_ide_code_completions.editors.models.languages" = Table.ExpandListColumn(#"Expanded Column1.copilot_ide_code_completions.editors.models1", "Column1.copilot_ide_code_completions.editors.models.languages"),
+				    #"Expanded Column1.copilot_ide_code_completions.editors.models.languages1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_ide_code_completions.editors.models.languages", "Column1.copilot_ide_code_completions.editors.models.languages", {"name", "total_engaged_users", "total_code_suggestions", "total_code_acceptances", "total_code_lines_suggested", "total_code_lines_accepted"}, {"Column1.copilot_ide_code_completions.editors.models.languages.name", "Column1.copilot_ide_code_completions.editors.models.languages.total_engaged_user", "Column1.copilot_ide_code_completions.editors.models.languages.total_code_suggest", "Column1.copilot_ide_code_completions.editors.models.languages.total_code_accepta", "Column1.copilot_ide_code_completions.editors.models.languages.total_code_lines_s", "Column1.copilot_ide_code_completions.editors.models.languages.total_code_lines_a"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded Column1.copilot_ide_code_completions.editors.models.languages1",{{"Column1.copilot_ide_code_completions.editors.name", "editors.name"}, {"Column1.copilot_ide_code_completions.editors.total_engaged_users", "editors.total_engaged_users"}, {"Column1.copilot_ide_code_completions.editors.models.name", "editors.models.name"}, {"Column1.copilot_ide_code_completions.editors.models.is_custom_model", "editors.models.is_custom_model"}, {"Column1.copilot_ide_code_completions.editors.models.custom_model_training_date", "editors.models.custom_model_training_date"}, {"Column1.copilot_ide_code_completions.editors.models.total_engaged_users", "editors.models.total_engaged_users"}, {"Column1.copilot_ide_code_completions.editors.models.languages.name", "editors.models.languages.name"}, {"Column1.copilot_ide_code_completions.editors.models.languages.total_engaged_user", "editors.models.languages.total_engaged_user"}, {"Column1.copilot_ide_code_completions.editors.models.languages.total_code_suggest", "editors.models.languages.total_code_suggestion"}, {"Column1.copilot_ide_code_completions.editors.models.languages.total_code_accepta", "editors.models.languages.total_code_acceptances"}, {"Column1.copilot_ide_code_completions.editors.models.languages.total_code_lines_s", "editors.models.languages.total_code_lines_suggested"}, {"Column1.copilot_ide_code_completions.editors.models.languages.total_code_lines_a", "editors.models.languages.total_code_lines_accepted"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"editors.total_engaged_users", Int64.Type}, {"editors.models.custom_model_training_date", type datetime}, {"editors.models.total_engaged_users", Int64.Type}, {"editors.models.languages.total_engaged_user", Int64.Type}, {"editors.models.languages.total_code_suggestion", Int64.Type}, {"editors.models.languages.total_code_acceptances", Int64.Type}, {"editors.models.languages.total_code_lines_suggested", Int64.Type}, {"editors.models.languages.total_code_lines_accepted", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

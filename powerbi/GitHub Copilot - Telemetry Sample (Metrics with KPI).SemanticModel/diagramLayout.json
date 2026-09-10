@@ -1,0 +1,126 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 10,
+            "y": 5
+          },
+          "nodeIndex": "GH Copilot - dotcom chat",
+          "nodeLineageTag": "e0bc4068-211c-49bc-90a1-58364a07fca5",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1138,
+            "y": 0
+          },
+          "nodeIndex": "GH Copilot - ide chat",
+          "nodeLineageTag": "7203249d-eb42-4f42-bdc5-0b0eba56ce33",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 12,
+            "y": 386.53419197894482
+          },
+          "nodeIndex": "GH Copilot - pull requests",
+          "nodeLineageTag": "709c076d-fefc-4cc2-8707-42051ae7b09c",
+          "size": {
+            "height": 406,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 563,
+            "y": 54.534191978944762
+          },
+          "nodeIndex": "GH Copilot - summary",
+          "nodeLineageTag": "bc2bd01b-a623-4af1-9083-04a0e56984ce",
+          "size": {
+            "height": 247,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 445,
+            "y": 717.53419197894482
+          },
+          "nodeIndex": "source",
+          "nodeLineageTag": "9547dd35-ad66-4edf-ac8b-0d47daa80bb8",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 7.3448961857084214,
+            "y": 858.5341919789447
+          },
+          "nodeIndex": "config",
+          "nodeLineageTag": "d696637c-c38c-4afe-a0a7-2bcd98007dcc",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 1320.3448961857084,
+            "y": 436.26709598947241
+          },
+          "nodeIndex": "GH Copilot - ide code completions editors",
+          "nodeLineageTag": "202aa73d-054b-4be9-a189-f164a6bea6cd",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 811.34489618570842,
+            "y": 725
+          },
+          "nodeIndex": "GH Copilot - ide code completions languages",
+          "nodeLineageTag": "9f0b9d27-72f7-4675-b371-406d69a5b854",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 80,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

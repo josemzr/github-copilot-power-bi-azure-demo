@@ -1,0 +1,83 @@
+table 'GH Copilot - dotcom chat'
+	lineageTag: e0bc4068-211c-49bc-90a1-58364a07fca5
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4855ccb4-675c-4998-92c5-f8bb392f89ae
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'models.name'
+		dataType: string
+		lineageTag: ac5cad71-fbed-42d7-bd8c-b87fdf3a0bc2
+		summarizeBy: none
+		sourceColumn: models.name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'models.is_custom_model'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 814e8c76-3efe-4afd-aa84-5557d3367943
+		summarizeBy: none
+		sourceColumn: models.is_custom_model
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'models.custom_model_training_date'
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a179d104-2393-48aa-9f2d-06d2865c52fd
+		summarizeBy: none
+		sourceColumn: models.custom_model_training_date
+
+		variation Variation
+			isDefault
+			relationship: b99de6c4-ed34-45ef-89a3-47e747e2dda9
+			defaultHierarchy: LocalDateTable_3e46fd62-58ce-4293-9ea9-c9bd45aa6df4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'models.total_engaged_users'
+		dataType: int64
+		formatString: 0
+		lineageTag: 9aca21d8-5138-4b76-9200-697ee85e39d7
+		summarizeBy: sum
+		sourceColumn: models.total_engaged_users
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'models.total_chats'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1a24bb30-4ee2-4443-b599-91f54a8adfb7
+		summarizeBy: sum
+		sourceColumn: models.total_chats
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'GH Copilot - dotcom chat' = m
+		mode: import
+		source =
+				let
+				    Source = source,
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1.copilot_ide_chat", "Column1.total_active_users", "Column1.total_engaged_users", "Column1.copilot_dotcom_pull_requests", "Column1.copilot_ide_code_completions"}),
+				    #"Expanded Column1.copilot_dotcom_chat" = Table.ExpandRecordColumn(#"Removed Columns", "Column1.copilot_dotcom_chat", {"total_engaged_users", "models"}, {"Column1.copilot_dotcom_chat.total_engaged_users", "Column1.copilot_dotcom_chat.models"}),
+				    #"Expanded Column1.copilot_dotcom_chat.models" = Table.ExpandListColumn(#"Expanded Column1.copilot_dotcom_chat", "Column1.copilot_dotcom_chat.models"),
+				    #"Expanded Column1.copilot_dotcom_chat.models1" = Table.ExpandRecordColumn(#"Expanded Column1.copilot_dotcom_chat.models", "Column1.copilot_dotcom_chat.models", {"name", "is_custom_model", "custom_model_training_date", "total_engaged_users", "total_chats"}, {"Column1.copilot_dotcom_chat.models.name", "Column1.copilot_dotcom_chat.models.is_custom_model", "Column1.copilot_dotcom_chat.models.custom_model_training_date", "Column1.copilot_dotcom_chat.models.total_engaged_users", "Column1.copilot_dotcom_chat.models.total_chats"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Expanded Column1.copilot_dotcom_chat.models1",{{"Column1.copilot_dotcom_chat.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_chat.models.total_engaged_users", Int64.Type}, {"Column1.copilot_dotcom_chat.models.total_chats", Int64.Type}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Column1.copilot_dotcom_chat.total_engaged_users", "total_engaged_users"}, {"Column1.copilot_dotcom_chat.models.name", "models.name"}, {"Column1.copilot_dotcom_chat.models.is_custom_model", "models.is_custom_model"}, {"Column1.copilot_dotcom_chat.models.custom_model_training_date", "models.custom_model_training_date"}, {"Column1.copilot_dotcom_chat.models.total_engaged_users", "models.total_engaged_users"}, {"Column1.copilot_dotcom_chat.models.total_chats", "models.total_chats"}}),
+				    #"Removed Columns1" = Table.RemoveColumns(#"Renamed Columns",{"total_engaged_users"}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Removed Columns1",{{"models.custom_model_training_date", type datetime}, {"models.is_custom_model", type logical}})
+				in
+				    #"Changed Type1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
